@@ -32,7 +32,6 @@ const NeuralModel3D: React.FC = () => {
       connections.length = 0;
       
       const layerDistance = 150;
-      const maxLayerSize = Math.max(...layers);
       
       layers.forEach((layerSize, layerIndex) => {
         const z = (layerIndex - (layers.length - 1) / 2) * layerDistance;
@@ -95,6 +94,8 @@ const NeuralModel3D: React.FC = () => {
       
       // Calculate 3D projections
       const projectedNeurons = neurons.map((neuron) => {
+        if (!neuron) return null;
+        
         // 3D rotations
         let x = neuron.x;
         let y = neuron.y;
@@ -122,19 +123,33 @@ const NeuralModel3D: React.FC = () => {
           originalZ: z,
           layer: neuron.layer
         };
-      });
+      }).filter(Boolean) as {
+        x: number;
+        y: number;
+        scale: number;
+        originalZ: number;
+        layer: number;
+      }[];
       
       // Draw connections first (behind neurons)
       connections.forEach((conn) => {
         const from = projectedNeurons[conn.from];
         const to = projectedNeurons[conn.to];
         
+        // Skip if either neuron projection is missing
+        if (!from || !to) return;
+        
         // Only draw connections that are "visible" (in front)
         // Skip some connections for better performance
         if (Math.random() > 0.7) return;
         
         // Calculate connection opacity based on z-position
-        const zAvg = (neurons[conn.from].z + neurons[conn.to].z) / 2;
+        const fromNeuron = neurons[conn.from];
+        const toNeuron = neurons[conn.to];
+        
+        if (!fromNeuron || !toNeuron) return;
+        
+        const zAvg = (fromNeuron.z + toNeuron.z) / 2;
         let opacity = Math.min(Math.max((zAvg + 400) / 800, 0), 0.5);
         
         // Also use scale for opacity
@@ -171,6 +186,8 @@ const NeuralModel3D: React.FC = () => {
         if (neuron.originalZ < -400) return;
         
         const originalNeuron = neurons[i];
+        if (!originalNeuron) return;
+        
         const radius = Math.max(2, 5 * neuron.scale);
         
         // Calculate neuron opacity based on z-position
