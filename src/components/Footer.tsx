@@ -47,9 +47,6 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">Contact</h3>
             <p className="text-white/70 mb-2">Get in touch for collaborations, projects, or just to chat about AI!</p>
-            <a href="mailto:contact@aiportfolio.com" className="text-ai-blue hover:text-ai-purple transition-colors">
-              contact@aiportfolio.com
-            </a>
           </div>
         </div>
         
