@@ -54,10 +54,13 @@ const NeuralModel3D: React.FC = () => {
             const prevLayerEnd = neurons.length - layerSize;
             
             for (let j = prevLayerStart; j < prevLayerEnd; j++) {
-              connections.push({
-                from: j,
-                to: neurons.length - 1
-              });
+              // Make sure j is in valid range
+              if (j >= 0 && j < neurons.length) {
+                connections.push({
+                  from: j,
+                  to: neurons.length - 1
+                });
+              }
             }
           }
         }
@@ -133,6 +136,18 @@ const NeuralModel3D: React.FC = () => {
       
       // Draw connections first (behind neurons)
       connections.forEach((conn) => {
+        // Validate connection indices are within bounds
+        if (!conn || conn.from < 0 || conn.from >= neurons.length || conn.to < 0 || conn.to >= neurons.length) return;
+        
+        const fromNeuron = neurons[conn.from];
+        const toNeuron = neurons[conn.to];
+        
+        // Skip if either neuron is missing
+        if (!fromNeuron || !toNeuron) return;
+        
+        // Now check if the projected neurons exist
+        if (conn.from >= projectedNeurons.length || conn.to >= projectedNeurons.length) return;
+        
         const from = projectedNeurons[conn.from];
         const to = projectedNeurons[conn.to];
         
@@ -144,11 +159,6 @@ const NeuralModel3D: React.FC = () => {
         if (Math.random() > 0.7) return;
         
         // Calculate connection opacity based on z-position
-        const fromNeuron = neurons[conn.from];
-        const toNeuron = neurons[conn.to];
-        
-        if (!fromNeuron || !toNeuron) return;
-        
         const zAvg = (fromNeuron.z + toNeuron.z) / 2;
         let opacity = Math.min(Math.max((zAvg + 400) / 800, 0), 0.5);
         
@@ -182,6 +192,9 @@ const NeuralModel3D: React.FC = () => {
       
       // Draw neurons
       projectedNeurons.forEach((neuron, i) => {
+        // Skip if neuron is undefined or out of bounds
+        if (!neuron || i >= neurons.length) return;
+        
         // Skip neurons that are too far back
         if (neuron.originalZ < -400) return;
         
@@ -242,6 +255,8 @@ const NeuralModel3D: React.FC = () => {
     const updateDataParticles = () => {
       for (let i = dataParticles.length - 1; i >= 0; i--) {
         const particle = dataParticles[i];
+        if (!particle) continue;
+        
         particle.progress += 0.02;
         
         if (particle.progress >= 1) {
@@ -263,8 +278,15 @@ const NeuralModel3D: React.FC = () => {
     
     const animate = () => {
       if (!isRendering) return;
-      renderNeuralNetwork();
-      updateDataParticles();
+      
+      try {
+        renderNeuralNetwork();
+        updateDataParticles();
+      } catch (error) {
+        console.error("Animation error:", error);
+        // Continue the animation loop even if there was an error
+      }
+      
       requestAnimationFrame(animate);
     };
     
@@ -317,9 +339,13 @@ const NeuralModel3D: React.FC = () => {
     };
     
     // Initialize and start rendering
-    initNeuralNetwork();
-    resizeCanvas();
-    animate();
+    try {
+      initNeuralNetwork();
+      resizeCanvas();
+      animate();
+    } catch (error) {
+      console.error("Initialization error:", error);
+    }
     
     // Event listeners
     window.addEventListener('resize', resizeCanvas);
