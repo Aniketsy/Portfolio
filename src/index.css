@@ -37,6 +37,40 @@
 
     --radius: 0.5rem;
   }
+
+  .light-theme {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 252 62% 54%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 142.1 70.6% 45.3%;
+  }
+
+  .dark-theme {
+    /* Keep original dark theme values */
+  }
 }
 
 @layer base {
@@ -45,15 +79,36 @@
   }
   
   body {
-    @apply bg-ai-darker text-foreground antialiased font-sans;
+    @apply bg-ai-darker text-foreground antialiased font-sans transition-colors duration-300;
+  }
+  
+  html {
+    @apply scroll-smooth;
+  }
+
+  .dark-theme body {
     background-image: 
       radial-gradient(circle at 100% 0%, rgba(155, 135, 245, 0.1) 0%, rgba(0, 0, 0, 0) 30%),
       radial-gradient(circle at 0% 100%, rgba(51, 195, 240, 0.1) 0%, rgba(0, 0, 0, 0) 30%);
     background-attachment: fixed;
   }
 
-  html {
-    @apply scroll-smooth;
+  .light-theme body {
+    @apply bg-white;
+    background-image: 
+      radial-gradient(circle at 100% 0%, rgba(155, 135, 245, 0.05) 0%, rgba(255, 255, 255, 0) 30%),
+      radial-gradient(circle at 0% 100%, rgba(51, 195, 240, 0.05) 0%, rgba(255, 255, 255, 0) 30%);
+    background-attachment: fixed;
+  }
+
+  .light-theme {
+    --ai-darker: 255, 255, 255;
+    --ai-dark: 245, 245, 250;
+  }
+
+  .dark-theme {
+    --ai-darker: 18, 18, 18;
+    --ai-dark: 26, 31, 44;
   }
 }
 
@@ -75,7 +130,11 @@
   }
   
   .glass-card {
-    @apply backdrop-blur-md bg-ai-dark/70 border border-ai-purple/20 shadow-lg;
+    @apply backdrop-blur-md bg-ai-dark/70 border border-ai-purple/20 shadow-lg transition-colors duration-300;
+  }
+
+  .light-theme .glass-card {
+    @apply backdrop-blur-md bg-white/80 border border-ai-purple/10 shadow-md;
   }
   
   .neo-border {
@@ -84,6 +143,10 @@
   
   .text-gradient {
     @apply bg-gradient-to-br from-ai-purple via-white to-ai-blue bg-clip-text text-transparent;
+  }
+
+  .light-theme .text-gradient {
+    @apply bg-gradient-to-br from-ai-purple via-ai-purple/80 to-ai-blue bg-clip-text text-transparent;
   }
   
   .link-hover {

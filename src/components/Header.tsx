@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { Terminal, User, Code, FileText, FlaskConical, Menu, X } from "lucide-react";
+import ThemeToggle from './ThemeToggle';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -46,14 +47,19 @@ const Header: React.FC = () => {
           </span>
         </a>
 
-        {/* Mobile menu button */}
-        <button 
-          className="md:hidden bg-ai-dark/60 hover:bg-ai-dark backdrop-blur-md p-2 rounded-md text-white"
-          onClick={toggleMenu}
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        >
-          {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        <div className="flex items-center gap-3">
+          {/* Theme Toggle */}
+          <ThemeToggle />
+
+          {/* Mobile menu button */}
+          <button 
+            className="md:hidden bg-ai-dark/60 hover:bg-ai-dark backdrop-blur-md p-2 rounded-md text-white"
+            onClick={toggleMenu}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
 
         {/* Desktop navigation */}
         <nav className="hidden md:flex items-center gap-1">
@@ -61,10 +67,11 @@ const Header: React.FC = () => {
             <a
               key={item.name}
               href={item.href}
-              className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-white/80 hover:text-white hover:bg-ai-dark/50 transition-colors"
+              className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-white/80 hover:text-white hover:bg-ai-dark/50 transition-colors relative group overflow-hidden"
             >
               {item.icon}
               <span>{item.name}</span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-ai-purple scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
             </a>
           ))}
         </nav>
