@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-ai-dark py-12 border-t border-ai-purple/10">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-1 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-ai-purple to-ai-blue flex items-center justify-center">
@@ -31,22 +31,6 @@ const Footer: React.FC = () => {
                 <Mail size={18} />
               </a>
             </div>
-          </div>
-          
-          <div>
-            <h3 className="text-white font-semibold mb-4">Navigation</h3>
-            <ul className="space-y-2">
-              <li><a href="#hero" className="text-white/70 hover:text-white transition-colors">Home</a></li>
-              <li><a href="#about" className="text-white/70 hover:text-white transition-colors">About</a></li>
-              <li><a href="#projects" className="text-white/70 hover:text-white transition-colors">Projects</a></li>
-              <li><a href="#resume" className="text-white/70 hover:text-white transition-colors">Resume</a></li>
-              <li><a href="#demos" className="text-white/70 hover:text-white transition-colors">Demos</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="text-white font-semibold mb-4">Contact</h3>
-            <p className="text-white/70 mb-2">Get in touch for collaborations, projects, or just to chat about AI!</p>
           </div>
         </div>
         
