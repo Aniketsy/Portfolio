@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
-import { Terminal, User, Code, FileText, Flask, Menu, X } from "lucide-react";
+import { Terminal, User, Code, FileText, FlaskConical, Menu, X } from "lucide-react";
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -26,7 +26,7 @@ const Header: React.FC = () => {
     { name: "About", icon: <User className="w-4 h-4" />, href: "#about" },
     { name: "Projects", icon: <Code className="w-4 h-4" />, href: "#projects" },
     { name: "Resume", icon: <FileText className="w-4 h-4" />, href: "#resume" },
-    { name: "Demos", icon: <Flask className="w-4 h-4" />, href: "#demos" }
+    { name: "Demos", icon: <FlaskConical className="w-4 h-4" />, href: "#demos" }
   ];
 
   return (
