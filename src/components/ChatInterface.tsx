@@ -1,5 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
 import { User, Send, Loader2 } from 'lucide-react';
 
 type Message = {
@@ -9,15 +10,7 @@ type Message = {
   sentAt: Date;
 };
 
-const predefinedResponses = [
-  "As an AI specialist, I focus on developing models that can understand and generate human language.",
-  "My experience spans 5+ years in machine learning, with expertise in deep learning frameworks like TensorFlow and PyTorch.",
-  "I believe AI should be ethical, transparent, and designed to augment human capabilities rather than replace them.",
-  "My most recent project involved fine-tuning a large language model for specialized domain knowledge in healthcare.",
-  "I've published research on attention mechanisms in transformer architectures and their application in multimodal learning.",
-  "Outside of work, I contribute to open-source ML projects and mentor students interested in AI careers.",
-  "My goal is to build AI systems that are both technically sophisticated and genuinely helpful to people."
-];
+// ...existing code...
 
 const ChatInterface: React.FC = () => {
   const [input, setInput] = useState('');
@@ -38,10 +31,10 @@ const ChatInterface: React.FC = () => {
   
   useEffect(scrollToBottom, [messages]);
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim() === '') return;
-    
+
     // Add user message
     const userMessage: Message = {
       id: messages.length,
@@ -49,25 +42,30 @@ const ChatInterface: React.FC = () => {
       isUser: true,
       sentAt: new Date()
     };
-    
+
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsTyping(true);
-    
-    // Simulate AI thinking and responding
-    setTimeout(() => {
-      const responseText = predefinedResponses[Math.floor(Math.random() * predefinedResponses.length)];
-      
+
+    try {
+      const res = await axios.post('/api/chat', { message: input });
       const aiMessage: Message = {
         id: messages.length + 1,
-        text: responseText,
+        text: res.data.response || 'No response',
         isUser: false,
         sentAt: new Date()
       };
-      
       setMessages(prev => [...prev, aiMessage]);
+    } catch (error) {
+      setMessages(prev => [...prev, {
+        id: messages.length + 1,
+        text: 'Error: Could not get response from server.',
+        isUser: false,
+        sentAt: new Date()
+      }]);
+    } finally {
       setIsTyping(false);
-    }, 1000 + Math.random() * 1000);
+    }
   };
   
   return (

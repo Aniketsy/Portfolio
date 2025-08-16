@@ -14,46 +14,32 @@ interface TimelineItem {
 
 const timelineData: TimelineItem[] = [
   {
-    year: '2018',
-    title: 'Started Learning Machine Learning',
-    description: 'Began with fundamentals and statistical learning theory',
-    icon: 'study',
-    skills: ['Python', 'Pandas', 'Scikit-learn', 'Statistical Analysis']
-  },
-  {
-    year: '2019',
-    title: 'Deep Learning Specialization',
-    description: 'Completed comprehensive study of neural networks and deep learning',
-    icon: 'study',
-    skills: ['TensorFlow', 'Neural Networks', 'CNN', 'RNN', 'LSTM']
-  },
-  {
-    year: '2020',
-    title: 'First ML Project Deployment',
-    description: 'Deployed image recognition system to production',
-    icon: 'code',
-    skills: ['Computer Vision', 'Model Deployment', 'Docker', 'Cloud Services']
-  },
-  {
-    year: '2021',
-    title: 'NLP Research Publication',
-    description: 'Published research on text generation using transformers',
-    icon: 'award',
-    skills: ['NLP', 'Transformers', 'BERT', 'GPT', 'Research Methods']
-  },
-  {
-    year: '2022',
-    title: 'ML Engineering Lead',
-    description: 'Led team developing recommender systems at scale',
-    icon: 'code',
-    skills: ['Recommender Systems', 'Leadership', 'MLOps', 'System Design']
-  },
-  {
     year: '2023',
-    title: 'AI Ethics Certification',
-    description: 'Completed advanced certification in responsible AI',
+    title: 'Started with Python',
+    description: 'Began my programming journey at college, learning Python fundamentals and building a strong coding foundation.',
+    icon: 'study',
+    skills: ['Python']
+  },
+  {
+    year: '2024',
+    title: 'Machine Learning & Deep Learning',
+    description: 'Dived into machine learning and deep learning, completed foundational courses, and worked on Kaggle basic projects to apply new skills.',
+    icon: 'study',
+    skills: ['Machine Learning', 'Deep Learning', 'Kaggle']
+  },
+  {
+    year: '2024',
+    title: 'Major Projects',
+    description: 'Built and deployed real-world AI/ML projects, gaining hands-on experience in model development and deployment.',
+    icon: 'code',
+    skills: ['AI Projects', 'Deployment', 'Model Building']
+  },
+  {
+    year: '2025',
+    title: 'Open Source, Nexarch & Codeforces',
+    description: 'Started contributing to open source for real-world impact. Began developing Nexarch (AI-powered auto CEO) as a personal project. Also started competitive programming and participating in Codeforces contests from June 2025.',
     icon: 'award',
-    skills: ['AI Ethics', 'Fairness', 'Transparency', 'Responsible AI']
+    skills: ['Open Source', 'Nexarch', 'Competitive Programming', 'Codeforces']
   }
 ];
 

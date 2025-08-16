@@ -43,7 +43,7 @@ const Header: React.FC = () => {
             <Terminal className="w-4 h-4 text-white" />
           </div>
           <span className="text-xl font-semibold text-white">
-            <span className="text-gradient">AI</span>_Portfolio
+            Hi, I’m Aniket
           </span>
         </a>
 

@@ -1,5 +1,6 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import Header from '@/components/Header';
 import NeuralNetworkAnimation from '@/components/NeuralNetworkAnimation';
 import ParticlesBackground from '@/components/ParticlesBackground';
@@ -9,94 +10,129 @@ import ChatInterface from '@/components/ChatInterface';
 import NeuralModel3D from '@/components/NeuralModel3D';
 import ScrollAnimation from '@/components/ScrollAnimation';
 import SkillTimeline from '@/components/SkillTimeline';
-import TestimonialSection from '@/components/TestimonialSection';
 import ImageClassifierDemo from '@/components/ImageClassifierDemo';
 import VoiceNavigation from '@/components/VoiceNavigation';
 import Footer from '@/components/Footer';
 import { ArrowDown, Brain, ChevronRight, Download, Github } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 
-// Sample project data
-const projects = [
-  {
-    title: "CNN Image Classifier",
-    description: "A convolutional neural network for image classification trained on the ImageNet dataset with 90% accuracy.",
-    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&auto=format&fit=crop",
-    tags: ["Computer Vision", "CNN", "TensorFlow", "Docker"],
-    githubUrl: "#",
-    demoUrl: "#"
-  },
-  {
-    title: "NLP Sentiment Analysis",
-    description: "Real-time sentiment analysis of text using a BERT-based model fine-tuned on customer reviews.",
-    image: "https://images.unsplash.com/photo-1655720828018-7467e9fa29ae?w=800&auto=format&fit=crop",
-    tags: ["NLP", "BERT", "PyTorch", "Hugging Face"],
-    githubUrl: "#",
-    demoUrl: "#"
-  },
-  {
-    title: "Reinforcement Learning Agent",
-    description: "A reinforcement learning agent that masters Atari games using Deep Q-Learning Networks.",
-    image: "https://images.unsplash.com/photo-1535406208535-1429839cfd13?w=800&auto=format&fit=crop",
-    tags: ["Reinforcement Learning", "DQN", "OpenAI Gym"],
-    githubUrl: "#"
-  }
-];
+// Fetch projects from backend
 
 // Skill categories
 const skills = [
-  { 
-    name: "Machine Learning", 
-    items: ["Regression", "Classification", "Clustering", "Dimensionality Reduction", "Ensemble Methods"]
-  },
-  {
-    name: "Deep Learning",
-    items: ["Neural Networks", "CNN", "RNN", "LSTM", "Transformers", "GANs"]
-  },
-  {
-    name: "Natural Language Processing",
-    items: ["BERT", "GPT", "Text Classification", "Named Entity Recognition", "Language Generation"]
-  },
-  {
-    name: "Computer Vision",
-    items: ["Image Classification", "Object Detection", "Segmentation", "Face Recognition", "OCR"]
-  },
-  {
-    name: "Tools & Frameworks",
-    items: ["TensorFlow", "PyTorch", "Scikit-learn", "Keras", "Hugging Face", "MLflow"]
-  }
+  "Python", "R", "Java", "SQL",
+  "TensorFlow", "PyTorch", "scikit-learn", "Keras", "Flask", "FastAPI", "Streamlit", "Pandas", "NumPy",
+  "Matplotlib", "Seaborn", "JAX", "NLTK", "spaCy", "Hugging Face Transformers", "OpenCV", "XGBoost", "LightGBM", "Plotly", "Docker", "Git", "GitHub",
+  "Artificial Intelligence", "Machine Learning", "Deep Learning", "Natural Language Processing", "Computer Vision",
+  "Data Structures", "Algorithms", "Competitive Programming"
 ];
 
 // Achievements/badges data
 const achievements = [
   {
-    title: "TensorFlow Certified",
-    icon: "🧠",
-    year: "2022",
-    description: "Google's professional certification for TensorFlow practitioners"
-  },
-  {
-    title: "Kaggle Competition Winner",
+    title: "Kaggle Contributor & Participant",
+    year: "2022-Present",
+    description: "Active participant in Kaggle contests and author of notebooks on Reinforcement Learning Algorithms.",
     icon: "🏆",
-    year: "2021",
-    description: "1st place in text classification challenge"
-  },
-  {
-    title: "Research Publication",
-    icon: "📝",
-    year: "2023",
-    description: "Published in Conference on Computer Vision (CVPR)"
   },
   {
     title: "Open Source Contributor",
+    year: "2023-Present",
+    description: "Contributor to pandas, and active contributor to CPython and SymPy projects.",
     icon: "🌟",
-    year: "2020-Present",
-    description: "Active contributor to Hugging Face transformers"
+  },
+  {
+    title: "CS50P: Introduction to Programming with Python",
+    year: "2023",
+    description: "Harvard University (CS50P) – Introduction to programming, problem-solving, and Python fundamentals.",
+    icon: "🐍",
+  },
+  {
+    title: "CS50x: Introduction to Computer Science",
+    year: "2023",
+    description: "Harvard University (CS50x) – Comprehensive foundation in computer science, algorithms, and software engineering.",
+    icon: "🎓",
+  },
+  {
+    title: "CS50AI: Introduction to Artificial Intelligence with Python",
+    year: "2024",
+    description: "Harvard University (CS50AI) – Search, knowledge, inference, optimization, and machine learning with Python.",
+    icon: "🤖",
+  },
+  {
+    title: "Machine Learning Specialization",
+    year: "2024",
+    description: "Stanford University (Coursera) – Supervised/unsupervised learning, best practices, and real-world ML applications.",
+    icon: "�",
+  },
+  {
+    title: "Deep Learning Specialization",
+    year: "2024",
+    description: "DeepLearning.AI (Coursera) – Neural networks, CNNs, RNNs, and advanced deep learning techniques.",
+    icon: "🧠",
+  },
+  {
+    title: "Data Structures Certificate",
+    year: "2024",
+    description: "UC San Diego (Coursera) – Arrays, linked lists, trees, and advanced data structures for efficient computation.",
+    icon: "�",
+  },
+  {
+    title: "Algorithms Certificate",
+    year: "2024",
+    description: "UC San Diego (Coursera) – Algorithmic techniques and problem-solving for computational challenges.",
+    icon: "🧩",
   },
 ];
 
 const Index: React.FC = () => {
   const { theme } = useTheme();
+
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loadingProjects, setLoadingProjects] = useState<boolean>(true);
+  const [errorProjects, setErrorProjects] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Manually add Stock Market Prediction project for now
+    const staticProjects = [
+      {
+        title: "Stock Market Prediction",
+        description: "Developed a predictive model to forecast stock prices using historical market data. Implemented feature engineering, data preprocessing, and visualization to identify trends and patterns. Trained and evaluated an LSTM-based deep learning model to capture time-series dependencies and improve prediction accuracy.",
+        image: "", // Add image path if available
+        tags: ["Python", "Pandas", "NumPy", "Matplotlib", "Scikit-learn", "LSTM", "TensorFlow", "Keras", "Data Visualization"],
+        githubUrl: "https://github.com/Aniketsy/stock-market-prediction",
+        demoUrl: ""
+      },
+      {
+        title: "AI - Health Platform",
+        description: "Developed a health platform integrating computer vision and NLP to raise awareness on skin cancer and mental health. Created an NLP-powered conversational agent for emotional support and mental wellness tips. Integrated short, informative videos for health education.",
+        image: "", // Add image path if available
+        tags: ["Python", "TensorFlow", "Keras", "OpenCV", "NLP", "NLTK", "Transformers", "Flask", "HTML", "CSS", "JavaScript"],
+        githubUrl: "https://github.com/Aniketsy/ai-health-platform",
+        demoUrl: ""
+      },
+      {
+        title: "Resume Analyzer (QuireBoard)",
+        description: "Enables recruiters to process and analyze multiple resumes at once, ranking them based on job-specific criteria. Provides personalized feedback and keyword optimization suggestions for a single resume. Built with NLP and machine learning for resume parsing and ranking.",
+        image: "", // Add image path if available
+        tags: ["Python", "NLP", "spaCy", "NLTK", "Scikit-learn", "Flask", "HTML", "CSS", "JavaScript"],
+        githubUrl: "https://github.com/Aniketsy/quireboard",
+        demoUrl: ""
+      }
+    ];
+    axios.get('/api/projects')
+      .then((response) => {
+        // Ensure projects is always an array
+        const apiProjects = Array.isArray(response.data) ? response.data : [];
+        setProjects([...staticProjects, ...apiProjects]);
+        setLoadingProjects(false);
+      })
+      .catch((error) => {
+        setProjects(staticProjects);
+        setErrorProjects('Failed to load projects.');
+        setLoadingProjects(false);
+      });
+  }, []);
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -111,11 +147,11 @@ const Index: React.FC = () => {
           <ScrollAnimation animation="fade-up" className="max-w-3xl mx-auto text-center">
             <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full bg-ai-purple/20 text-ai-purple text-sm">
               <Brain size={16} className="mr-2" /> 
-              AI/ML Engineer & Researcher
+              AI, ML & Data Science Practitioner
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gradient">
-              Building Intelligent <br /> Systems for the Future
+              Welcome to my world of algorithms, equations, and artificial minds.
             </h1>
             
             <div className="text-xl md:text-2xl text-white/80 mb-10 h-[80px]">
@@ -141,7 +177,8 @@ const Index: React.FC = () => {
               </a>
               
               <a 
-                href="#" 
+                href="/Aniket-Resume.pdf" 
+                download
                 className="px-6 py-3 rounded-lg bg-ai-dark/80 hover:bg-ai-dark border border-ai-purple/30 text-white font-medium transition-all hover:scale-105 flex items-center justify-center"
               >
                 Download CV
@@ -188,7 +225,7 @@ const Index: React.FC = () => {
                 Interact with my <span className="text-gradient">AI Assistant</span>
               </h2>
               <p className="text-white/70 max-w-2xl mx-auto">
-                Ask questions about my experience, skills, or interests. My AI assistant will tell you more about me and my journey in the field of artificial intelligence.
+                I’m Aniket, a second-year Computer Science student deeply passionate about leveraging Artificial Intelligence and Machine Learning to build impactful solutions.
               </p>
             </ScrollAnimation>
             
@@ -200,16 +237,12 @@ const Index: React.FC = () => {
               <ScrollAnimation animation="slide-in-right" delay={200} className="order-1 lg:order-2">
                 <div className="glass-card rounded-lg p-6 neo-border hover:scale-[1.02] transition-transform duration-300">
                   <h3 className="text-2xl font-bold text-white mb-4">My Journey in AI</h3>
-                  
                   <div className="space-y-4 mb-6">
                     <p className="text-white/80">
-                      With over 5 years of experience in machine learning and artificial intelligence, I've developed a passion for creating models that understand and learn from complex data patterns.
+                      My journey in AI began with a fascination for how machines can learn from data. Over the years, I have built and deployed deep learning models for real-world applications, participated in coding competitions like Codeforces, and contributed to open-source projects.
                     </p>
                     <p className="text-white/80">
-                      My specialization includes deep learning architectures, natural language processing, and computer vision systems that can be deployed in production environments.
-                    </p>
-                    <p className="text-white/80">
-                      I'm particularly interested in the intersection of AI explainability, ethics, and human-centered design — ensuring that the systems we build are not just powerful but also transparent and fair.
+                      I am especially interested in explainable AI and ethical machine learning. My goal is to create intelligent systems that are both powerful and trustworthy, making a positive impact on society.
                     </p>
                   </div>
                   
@@ -242,9 +275,11 @@ const Index: React.FC = () => {
           </ScrollAnimation>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project, index) => (
+            {loadingProjects && <div className="text-white">Loading projects...</div>}
+            {errorProjects && <div className="text-red-400">{errorProjects}</div>}
+            {!loadingProjects && !errorProjects && projects.map((project, index) => (
               <ScrollAnimation 
-                key={index}
+                key={project.id || index}
                 animation="fade-up"
                 delay={index * 200}
               >
@@ -252,7 +287,7 @@ const Index: React.FC = () => {
                   title={project.title}
                   description={project.description}
                   image={project.image}
-                  tags={project.tags}
+                  tags={project.tags || []}
                   githubUrl={project.githubUrl}
                   demoUrl={project.demoUrl}
                 />
@@ -285,7 +320,7 @@ const Index: React.FC = () => {
             </p>
           </ScrollAnimation>
           
-          <SkillTimeline />
+            <SkillTimeline />
         </div>
       </section>
       
@@ -321,6 +356,30 @@ const Index: React.FC = () => {
         </div>
       </section>
       
+      {/* Experience Section */}
+      <section id="experience" className="py-20 bg-ai-dark/30">
+        <div className="container mx-auto px-4">
+          <ScrollAnimation animation="fade-up" className="text-center mb-16">
+            <span className="text-ai-purple text-sm font-medium mb-2 block">EXPERIENCE</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Professional <span className="text-gradient">Experience</span>
+            </h2>
+          </ScrollAnimation>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="glass-card rounded-lg p-6">
+              <h3 className="text-xl font-bold text-white mb-2">Machine Learning Intern</h3>
+              <div className="text-ai-purple text-sm mb-1">Vision Valt &mdash; Sep 2024 - Dec 2024</div>
+              <p className="text-white/80">Worked on building machine learning models for real-world projects, contributing to the development and deployment of intelligent solutions.</p>
+            </div>
+            <div className="glass-card rounded-lg p-6">
+              <h3 className="text-xl font-bold text-white mb-2">Machine Learning & Data Science Specialist</h3>
+              <div className="text-ai-purple text-sm mb-1">Upwork &mdash; Active Freelancer</div>
+              <a href="https://www.upwork.com/freelancers/~013aa297803873a4e9" target="_blank" rel="noopener noreferrer" className="text-ai-blue hover:text-ai-purple transition-colors text-sm mb-2 inline-block">View Upwork Profile</a>
+              <p className="text-white/80">Delivering machine learning and data science solutions to global clients as a top-rated freelancer on Upwork.</p>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* Skills Section */}
       <section id="skills" className="py-20 bg-ai-dark/50">
         <div className="container mx-auto px-4">
@@ -334,52 +393,19 @@ const Index: React.FC = () => {
             </p>
           </ScrollAnimation>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {skills.map((category, index) => (
-              <ScrollAnimation 
+          <div className="flex flex-wrap gap-3 justify-center">
+            {skills.map((skill, index) => (
+              <span
                 key={index}
-                animation="fade-up"
-                delay={index * 100}
+                className="px-4 py-2 bg-ai-purple/20 text-ai-purple rounded-full text-sm font-medium shadow-sm hover:bg-ai-purple/40 transition-colors"
               >
-                <div className="glass-card rounded-lg p-6 hover:scale-[1.02] transition-transform duration-300">
-                  <h3 className="text-xl font-semibold text-white mb-4">{category.name}</h3>
-                  
-                  <ul className="space-y-2">
-                    {category.items.map((skill, skillIndex) => (
-                      <li 
-                        key={skillIndex}
-                        className="flex items-center text-white/80 group"
-                      >
-                        <div className="w-2 h-2 rounded-full bg-ai-purple mr-3 group-hover:scale-150 transition-transform"></div>
-                        {skill}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </ScrollAnimation>
+                {skill}
+              </span>
             ))}
           </div>
         </div>
       </section>
       
-      {/* Testimonials Section */}
-      <section id="testimonials" className="py-20">
-        <div className="container mx-auto px-4">
-          <ScrollAnimation animation="fade-up" className="text-center mb-16">
-            <span className="text-ai-purple text-sm font-medium mb-2 block">TESTIMONIALS</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              What <span className="text-gradient">Colleagues Say</span>
-            </h2>
-            <p className="text-white/70 max-w-2xl mx-auto">
-              Feedback from people I've worked with on AI and machine learning projects.
-            </p>
-          </ScrollAnimation>
-          
-          <ScrollAnimation animation="fade-up" delay={200}>
-            <TestimonialSection />
-          </ScrollAnimation>
-        </div>
-      </section>
       
       {/* AI Demo Section */}
       <section id="demos" className="py-20 bg-ai-dark/30">
@@ -429,6 +455,6 @@ const Index: React.FC = () => {
       <VoiceNavigation />
     </div>
   );
-};
+}
 
 export default Index;
