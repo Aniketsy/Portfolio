@@ -5,6 +5,6 @@ import { authenticate } from '../middleware/auth';
 const router = Router();
 
 router.get('/', authenticate, getChatHistory);
-router.post('/', sendMessage);
+router.post('/', authenticate, sendMessage);
 
 export default router;

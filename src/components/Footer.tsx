@@ -9,9 +9,6 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-1 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-ai-purple to-ai-blue flex items-center justify-center">
-                <span className="text-white font-bold">AI</span>
-              </div>
               <h3 className="text-lg font-semibold text-white">Looking forward to connecting</h3>
             </div>
             <p className="text-white/60 mb-6">

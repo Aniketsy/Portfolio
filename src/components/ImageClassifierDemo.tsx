@@ -1,27 +1,25 @@
 
+
 import React, { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Upload, RefreshCw, Camera } from 'lucide-react';
+import axios from 'axios';
+
 
 const ImageClassifierDemo: React.FC = () => {
   const [image, setImage] = useState<string | null>(null);
-  const [predictions, setPredictions] = useState<{label: string; probability: number}[]>([]);
+  const [description, setDescription] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
   
-  const mockLabels = [
-    'Neural Network', 'Deep Learning', 'Machine Learning', 
-    'Artificial Intelligence', 'Computer Vision', 'Robot', 
-    'Data Science', 'Algorithm', 'Tensor'
-  ];
-  
+
   const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    
     const reader = new FileReader();
     reader.onload = (e) => {
       if (typeof e.target?.result === 'string') {
@@ -31,33 +29,26 @@ const ImageClassifierDemo: React.FC = () => {
     };
     reader.readAsDataURL(file);
   };
-  
-  const classifyImage = (imageData: string) => {
+
+  const classifyImage = async (imageData: string) => {
     setIsProcessing(true);
-    
-    // Simulate AI processing delay
-    setTimeout(() => {
-      // Generate mock predictions
-      const mockPredictions = mockLabels
-        .map(label => ({
-          label,
-          probability: Math.random()
-        }))
-        .sort((a, b) => b.probability - a.probability)
-        .slice(0, 5)
-        .map(pred => ({
-          ...pred,
-          probability: pred.probability * 0.8 + 0.1 // Scale to reasonable range
-        }));
-      
-      setPredictions(mockPredictions);
+    setDescription(null);
+    setError(null);
+    try {
+      const response = await axios.post('/api/image-classifier', { image: imageData });
+      setDescription(response.data.result || 'No description returned.');
+    } catch (err: any) {
+      setError(err?.response?.data?.message || 'Failed to classify image.');
+    } finally {
       setIsProcessing(false);
-    }, 1500);
+    }
   };
   
+
   const resetDemo = () => {
     setImage(null);
-    setPredictions([]);
+    setDescription(null);
+    setError(null);
     setIsCameraActive(false);
     if (videoRef.current && videoRef.current.srcObject) {
       const stream = videoRef.current.srcObject as MediaStream;
@@ -172,7 +163,7 @@ const ImageClassifierDemo: React.FC = () => {
               </button>
             )}
             
-            {(image || predictions.length > 0) && (
+            {(image || description || error) && (
               <button
                 onClick={resetDemo}
                 className="bg-ai-dark/50 hover:bg-ai-dark/80 text-white py-2 px-3 rounded-md flex items-center justify-center"
@@ -195,50 +186,22 @@ const ImageClassifierDemo: React.FC = () => {
         {/* Results */}
         <div className="w-full md:w-1/2">
           <div className="bg-ai-dark/50 p-4 rounded-lg h-full">
-            <h4 className="text-white font-semibold mb-4">Classification Results</h4>
-            
-            {predictions.length > 0 ? (
-              <div className="space-y-4">
-                {predictions.map((prediction, index) => (
-                  <div key={index} className="relative">
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-white">{prediction.label}</span>
-                      <span className="text-ai-purple">
-                        {Math.round(prediction.probability * 100)}%
-                      </span>
-                    </div>
-                    <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-                      <div 
-                        className={cn(
-                          "h-full rounded-full transition-all duration-1000",
-                          index === 0 
-                            ? "bg-ai-purple" 
-                            : "bg-gradient-to-r from-ai-purple/70 to-ai-blue/70"
-                        )}
-                        style={{ 
-                          width: `${prediction.probability * 100}%`,
-                          transitionDelay: `${index * 100}ms`
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-                
-                <div className="mt-6 text-white/60 text-sm">
-                  <p>
-                    <span className="text-ai-purple font-medium">Note:</span> This is a 
-                    demo classification using simulated results. In a real application, 
-                    this would use a trained machine learning model.
-                  </p>
-                </div>
+            <h4 className="text-white font-semibold mb-4">AI Image Description</h4>
+            {isProcessing ? (
+              <div className="h-full flex items-center justify-center text-white/50 text-center">
+                <p>Analyzing image content...</p>
+              </div>
+            ) : error ? (
+              <div className="h-full flex items-center justify-center text-red-400 text-center">
+                <p>{error}</p>
+              </div>
+            ) : description ? (
+              <div className="h-full flex items-center justify-center text-white text-center">
+                <p>{description}</p>
               </div>
             ) : (
               <div className="h-full flex items-center justify-center text-white/50 text-center">
-                {isProcessing ? (
-                  <p>Analyzing image content...</p>
-                ) : (
-                  <p>Upload or capture an image to see AI classification results</p>
-                )}
+                <p>Upload or capture an image to see AI description results</p>
               </div>
             )}
           </div>

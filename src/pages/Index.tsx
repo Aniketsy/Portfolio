@@ -1,5 +1,6 @@
 
-import React, { useEffect, useState } from 'react';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from '@/components/Header';
 import NeuralNetworkAnimation from '@/components/NeuralNetworkAnimation';
@@ -98,7 +99,7 @@ const Index: React.FC = () => {
       {
         title: "Stock Market Prediction",
         description: "Developed a predictive model to forecast stock prices using historical market data. Implemented feature engineering, data preprocessing, and visualization to identify trends and patterns. Trained and evaluated an LSTM-based deep learning model to capture time-series dependencies and improve prediction accuracy.",
-        image: "", // Add image path if available
+  image: "/stock-market.jpg", // Correct public path
         tags: ["Python", "Pandas", "NumPy", "Matplotlib", "Scikit-learn", "LSTM", "TensorFlow", "Keras", "Data Visualization"],
         githubUrl: "https://github.com/Aniketsy/stock-market-prediction",
         demoUrl: ""
@@ -106,7 +107,7 @@ const Index: React.FC = () => {
       {
         title: "AI - Health Platform",
         description: "Developed a health platform integrating computer vision and NLP to raise awareness on skin cancer and mental health. Created an NLP-powered conversational agent for emotional support and mental wellness tips. Integrated short, informative videos for health education.",
-        image: "", // Add image path if available
+  image: "/ai-health-platform.jpg", // Correct public path
         tags: ["Python", "TensorFlow", "Keras", "OpenCV", "NLP", "NLTK", "Transformers", "Flask", "HTML", "CSS", "JavaScript"],
         githubUrl: "https://github.com/Aniketsy/ai-health-platform",
         demoUrl: ""
@@ -114,7 +115,7 @@ const Index: React.FC = () => {
       {
         title: "Resume Analyzer (QuireBoard)",
         description: "Enables recruiters to process and analyze multiple resumes at once, ranking them based on job-specific criteria. Provides personalized feedback and keyword optimization suggestions for a single resume. Built with NLP and machine learning for resume parsing and ranking.",
-        image: "", // Add image path if available
+  image: "/resume-analyzer.jpg", // Correct public path
         tags: ["Python", "NLP", "spaCy", "NLTK", "Scikit-learn", "Flask", "HTML", "CSS", "JavaScript"],
         githubUrl: "https://github.com/Aniketsy/quireboard",
         demoUrl: ""
@@ -251,8 +252,6 @@ const Index: React.FC = () => {
                       <Github size={20} className="mr-2" />
                       GitHub
                     </a>
-                    <div className="w-1 h-1 rounded-full bg-white/20"></div>
-                    <span className="text-white/50">Featured in 3 research papers</span>
                   </div>
                 </div>
               </ScrollAnimation>
