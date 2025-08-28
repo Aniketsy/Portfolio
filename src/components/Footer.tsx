@@ -32,13 +32,7 @@ const Footer: React.FC = () => {
         </div>
         
         <div className="border-t border-ai-purple/10 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-white/50 text-sm mb-4 md:mb-0">
-            &copy; {new Date().getFullYear()} Looking forward to connecting. All rights reserved.
-          </p>
-          <div className="flex gap-6 text-sm">
-            <a href="#" className="text-white/50 hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="text-white/50 hover:text-white transition-colors">Terms of Service</a>
-          </div>
+          {/* Footer links removed as requested */}
         </div>
       </div>
     </footer>

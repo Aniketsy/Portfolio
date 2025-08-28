@@ -3,17 +3,14 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from '@/components/Header';
-import NeuralNetworkAnimation from '@/components/NeuralNetworkAnimation';
 import ParticlesBackground from '@/components/ParticlesBackground';
 import TypingEffect from '@/components/TypingEffect';
 import ProjectCard from '@/components/ProjectCard';
-import ChatInterface from '@/components/ChatInterface';
-import NeuralModel3D from '@/components/NeuralModel3D';
 import ScrollAnimation from '@/components/ScrollAnimation';
 import SkillTimeline from '@/components/SkillTimeline';
-import ImageClassifierDemo from '@/components/ImageClassifierDemo';
-import VoiceNavigation from '@/components/VoiceNavigation';
 import Footer from '@/components/Footer';
+import NeuralNetworkAnimation from '@/components/NeuralNetworkAnimation';
+import NeuralModel3D from '@/components/NeuralModel3D';
 import { ArrowDown, Brain, ChevronRight, Download, Github } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 
@@ -35,12 +32,6 @@ const achievements = [
     year: "2022-Present",
     description: "Active participant in Kaggle contests and author of notebooks on Reinforcement Learning Algorithms.",
     icon: "🏆",
-  },
-  {
-    title: "Open Source Contributor",
-    year: "2023-Present",
-    description: "Contributor to pandas, and active contributor to CPython and SymPy projects.",
-    icon: "🌟",
   },
   {
     title: "CS50P: Introduction to Programming with Python",
@@ -73,15 +64,9 @@ const achievements = [
     icon: "🧠",
   },
   {
-    title: "Data Structures Certificate",
+    title: "Data Structures & Algorithms Certificate",
     year: "2024",
-    description: "UC San Diego (Coursera) – Arrays, linked lists, trees, and advanced data structures for efficient computation.",
-    icon: "�",
-  },
-  {
-    title: "Algorithms Certificate",
-    year: "2024",
-    description: "UC San Diego (Coursera) – Algorithmic techniques and problem-solving for computational challenges.",
+    description: "UC San Diego (Coursera) – Comprehensive study of data structures (arrays, linked lists, trees, etc.) and algorithmic techniques for computational problem-solving.",
     icon: "🧩",
   },
 ];
@@ -141,9 +126,8 @@ const Index: React.FC = () => {
       <ParticlesBackground />
       
       {/* Hero Section */}
-      <section id="hero" className="min-h-screen relative flex items-center justify-center pt-16">
+  <section id="hero" className="min-h-screen relative flex items-center justify-center pt-16">
         <NeuralNetworkAnimation />
-        
         <div className="container mx-auto px-4 py-16 md:py-32 relative z-10">
           <ScrollAnimation animation="fade-up" className="max-w-3xl mx-auto text-center">
             <div className="mb-6 inline-flex items-center px-3 py-1 rounded-full bg-ai-purple/20 text-ai-purple text-sm">
@@ -196,80 +180,32 @@ const Index: React.FC = () => {
         </div>
       </section>
       
-      {/* 3D Model Section */}
-      <section className="py-10 relative z-10 overflow-hidden">
-        <div className="container mx-auto px-4">
-          <ScrollAnimation animation="fade-up">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold text-gradient">
-                Interactive Neural Network
-              </h2>
-              <p className="text-white/70 mt-2">
-                Drag to explore a 3D visualization of a neural network
-              </p>
-            </div>
-          </ScrollAnimation>
-          
-          <ScrollAnimation animation="scale-up" delay={300}>
-            <NeuralModel3D />
-          </ScrollAnimation>
+  {/* 3D Model Section */}
+  <section className="py-10 relative z-10 overflow-hidden">
+    <div className="container mx-auto px-4">
+      <ScrollAnimation animation="fade-up">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gradient">
+            Interactive Neural Network
+          </h2>
         </div>
-      </section>
+      </ScrollAnimation>
+      <ScrollAnimation animation="scale-up" delay={300}>
+        <NeuralModel3D />
+      </ScrollAnimation>
+    </div>
+  </section>
       
-      {/* About Section */}
-      <section id="about" className="py-20 bg-ai-dark/50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <ScrollAnimation animation="fade-up" className="text-center mb-16">
-              <span className="text-ai-purple text-sm font-medium mb-2 block">ABOUT ME</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Interact with my <span className="text-gradient">AI Assistant</span>
-              </h2>
-              <p className="text-white/70 max-w-2xl mx-auto">
-                I’m Aniket, a second-year Computer Science student deeply passionate about leveraging Artificial Intelligence and Machine Learning to build impactful solutions.
-              </p>
-            </ScrollAnimation>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-              <ScrollAnimation animation="slide-in-left" delay={200} className="order-2 lg:order-1">
-                <ChatInterface />
-              </ScrollAnimation>
-              
-              <ScrollAnimation animation="slide-in-right" delay={200} className="order-1 lg:order-2">
-                <div className="glass-card rounded-lg p-6 neo-border hover:scale-[1.02] transition-transform duration-300">
-                  <h3 className="text-2xl font-bold text-white mb-4">My Journey in AI</h3>
-                  <div className="space-y-4 mb-6">
-                    <p className="text-white/80">
-                      My journey in AI began with a fascination for how machines can learn from data. Over the years, I have built and deployed deep learning models for real-world applications, participated in coding competitions like Codeforces, and contributed to open-source projects.
-                    </p>
-                    <p className="text-white/80">
-                      I am especially interested in explainable AI and ethical machine learning. My goal is to create intelligent systems that are both powerful and trustworthy, making a positive impact on society.
-                    </p>
-                  </div>
-                  
-                  <div className="flex items-center gap-4">
-                    <a href="#" className="text-ai-blue hover:text-ai-purple transition-colors flex items-center">
-                      <Github size={20} className="mr-2" />
-                      GitHub
-                    </a>
-                  </div>
-                </div>
-              </ScrollAnimation>
-            </div>
-          </div>
-        </div>
-      </section>
+  {/* About Section removed */}
       
       {/* Projects Section */}
       <section id="projects" className="py-20">
         <div className="container mx-auto px-4">
           <ScrollAnimation animation="fade-up" className="text-center mb-16">
             <span className="text-ai-purple text-sm font-medium mb-2 block">PROJECTS</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Computer Vision Powered <span className="text-gradient">Projects</span>
-            </h2>
+            {/* Heading removed as requested */}
             <p className="text-white/70 max-w-2xl mx-auto">
-              Hover over each project to see computer vision detection overlays. Each project showcases different AI/ML techniques and applications.
+              Explore a variety of projects demonstrating skills in software development, data analysis, and creative problem-solving across multiple domains.
             </p>
           </ScrollAnimation>
           
@@ -376,6 +312,11 @@ const Index: React.FC = () => {
               <a href="https://www.upwork.com/freelancers/~013aa297803873a4e9" target="_blank" rel="noopener noreferrer" className="text-ai-blue hover:text-ai-purple transition-colors text-sm mb-2 inline-block">View Upwork Profile</a>
               <p className="text-white/80">Delivering machine learning and data science solutions to global clients as a top-rated freelancer on Upwork.</p>
             </div>
+            <div className="glass-card rounded-lg p-6">
+              <h3 className="text-xl font-bold text-white mb-2">Open Source Contributor</h3>
+              <div className="text-ai-purple text-sm mb-1">JAX, Pandas, data-8/datascience &mdash; 2025-Present</div>
+              <p className="text-white/80">Contributed to major open source projects including JAX (Google), Pandas (data analysis library), and data-8/datascience (UC Berkeley). Enhanced features, fixed bugs, and improved documentation to support the data science and machine learning community.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -406,24 +347,7 @@ const Index: React.FC = () => {
       </section>
       
       
-      {/* AI Demo Section */}
-      <section id="demos" className="py-20 bg-ai-dark/30">
-        <div className="container mx-auto px-4">
-          <ScrollAnimation animation="fade-up" className="text-center mb-16">
-            <span className="text-ai-purple text-sm font-medium mb-2 block">INTERACTIVE</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              AI <span className="text-gradient">Technology Demo</span>
-            </h2>
-            <p className="text-white/70 max-w-2xl mx-auto">
-              Experience AI in action. Try out this interactive demo of image classification technology.
-            </p>
-          </ScrollAnimation>
-          
-          <ScrollAnimation animation="fade-up" delay={200}>
-            <ImageClassifierDemo />
-          </ScrollAnimation>
-        </div>
-      </section>
+  {/* AI Demo Section removed */}
       
       {/* Call to Action */}
       <section className="py-20 relative overflow-hidden">
@@ -450,8 +374,7 @@ const Index: React.FC = () => {
       
       <Footer />
       
-      {/* Voice Navigation */}
-      <VoiceNavigation />
+  {/* Voice Navigation removed */}
     </div>
   );
 }
