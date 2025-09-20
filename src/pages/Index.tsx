@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import Header from '@/components/Header';
 import ParticlesBackground from '@/components/ParticlesBackground';
 import TypingEffect from '@/components/TypingEffect';
@@ -74,51 +74,35 @@ const achievements = [
 const Index: React.FC = () => {
   const { theme } = useTheme();
 
-  const [projects, setProjects] = useState<any[]>([]);
-  const [loadingProjects, setLoadingProjects] = useState<boolean>(true);
-  const [errorProjects, setErrorProjects] = useState<string | null>(null);
+  // Static project data
+  const projects = [
+    {
+      title: "Stock Market Prediction",
+      description: "Developed a predictive model to forecast stock prices using historical market data. Implemented feature engineering, data preprocessing, and visualization to identify trends and patterns. Trained and evaluated an LSTM-based deep learning model to capture time-series dependencies and improve prediction accuracy.",
+      image: "/stock-market.jpg",
+      tags: ["Python", "Pandas", "NumPy", "Matplotlib", "Scikit-learn", "LSTM", "TensorFlow", "Keras", "Data Visualization"],
+      githubUrl: "https://github.com/Aniketsy/stock-market-prediction",
+      demoUrl: ""
+    },
+    {
+      title: "AI - Health Platform",
+      description: "Developed a health platform integrating computer vision and NLP to raise awareness on skin cancer and mental health. Created an NLP-powered conversational agent for emotional support and mental wellness tips. Integrated short, informative videos for health education.",
+      image: "/ai-health-platform.jpg",
+      tags: ["Python", "TensorFlow", "Keras", "OpenCV", "NLP", "NLTK", "Transformers", "Flask", "HTML", "CSS", "JavaScript"],
+      githubUrl: "https://github.com/Aniketsy/ai-health-platform",
+      demoUrl: ""
+    },
+    {
+      title: "Resume Analyzer (QuireBoard)",
+      description: "Enables recruiters to process and analyze multiple resumes at once, ranking them based on job-specific criteria. Provides personalized feedback and keyword optimization suggestions for a single resume. Built with NLP and machine learning for resume parsing and ranking.",
+      image: "/resume-analyzer.jpg",
+      tags: ["Python", "NLP", "spaCy", "NLTK", "Scikit-learn", "Flask", "HTML", "CSS", "JavaScript"],
+      githubUrl: "https://github.com/Aniketsy/quireboard",
+      demoUrl: ""
+    }
+  ];
 
-  useEffect(() => {
-    // Manually add Stock Market Prediction project for now
-    const staticProjects = [
-      {
-        title: "Stock Market Prediction",
-        description: "Developed a predictive model to forecast stock prices using historical market data. Implemented feature engineering, data preprocessing, and visualization to identify trends and patterns. Trained and evaluated an LSTM-based deep learning model to capture time-series dependencies and improve prediction accuracy.",
-  image: "/stock-market.jpg", // Correct public path
-        tags: ["Python", "Pandas", "NumPy", "Matplotlib", "Scikit-learn", "LSTM", "TensorFlow", "Keras", "Data Visualization"],
-        githubUrl: "https://github.com/Aniketsy/stock-market-prediction",
-        demoUrl: ""
-      },
-      {
-        title: "AI - Health Platform",
-        description: "Developed a health platform integrating computer vision and NLP to raise awareness on skin cancer and mental health. Created an NLP-powered conversational agent for emotional support and mental wellness tips. Integrated short, informative videos for health education.",
-  image: "/ai-health-platform.jpg", // Correct public path
-        tags: ["Python", "TensorFlow", "Keras", "OpenCV", "NLP", "NLTK", "Transformers", "Flask", "HTML", "CSS", "JavaScript"],
-        githubUrl: "https://github.com/Aniketsy/ai-health-platform",
-        demoUrl: ""
-      },
-      {
-        title: "Resume Analyzer (QuireBoard)",
-        description: "Enables recruiters to process and analyze multiple resumes at once, ranking them based on job-specific criteria. Provides personalized feedback and keyword optimization suggestions for a single resume. Built with NLP and machine learning for resume parsing and ranking.",
-  image: "/resume-analyzer.jpg", // Correct public path
-        tags: ["Python", "NLP", "spaCy", "NLTK", "Scikit-learn", "Flask", "HTML", "CSS", "JavaScript"],
-        githubUrl: "https://github.com/Aniketsy/quireboard",
-        demoUrl: ""
-      }
-    ];
-    axios.get('/api/projects')
-      .then((response) => {
-        // Ensure projects is always an array
-        const apiProjects = Array.isArray(response.data) ? response.data : [];
-        setProjects([...staticProjects, ...apiProjects]);
-        setLoadingProjects(false);
-      })
-      .catch((error) => {
-        setProjects(staticProjects);
-        setErrorProjects('Failed to load projects.');
-        setLoadingProjects(false);
-      });
-  }, []);
+  // useEffect removed; only static projects are used
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -210,9 +194,7 @@ const Index: React.FC = () => {
           </ScrollAnimation>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {loadingProjects && <div className="text-white">Loading projects...</div>}
-            {errorProjects && <div className="text-red-400">{errorProjects}</div>}
-            {!loadingProjects && !errorProjects && projects.map((project, index) => (
+            {projects.map((project, index) => (
               <ScrollAnimation 
                 key={project.id || index}
                 animation="fade-up"
